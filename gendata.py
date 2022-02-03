@@ -94,9 +94,11 @@ for file in json_files:
 # print(np.asarray(features).shape)
 
 import multiprocessing
-# p = multiprocessing.Pool(6)
+p = multiprocessing.Pool(32)
+train_data = [extract_features(d) for d in data] #p.map(extract_features, data)
+p.close()
+p.join()
 
-# train_data = [extract_features(d) for d in data] #p.map(extract_features, data)
-# np.save('train_imgs.npy', train_data)
+np.save('train_imgs.npy', train_data)
 np.save('train_labels.npy', labels)
 # print(labels)

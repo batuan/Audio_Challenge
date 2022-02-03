@@ -1,11 +1,21 @@
 import numpy as np
-
 from model import Resnet1D
 import argparse
 from keras.models import Sequential
 from keras.layers.recurrent import LSTM
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
+import tensorflow as tf
+import os
+
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+  try:
+    for gpu in gpus:
+      tf.config.experimental.set_memory_growth(gpu, True)
+  except RuntimeError as e:
+    print(e)
 
 
 def get_model(timeseries, nfeatures, nclass):
@@ -27,7 +37,8 @@ if __name__ == "__main__":
     model.compile(loss='binary_crossentropy', optimizer='Adam', metrics=['accuracy'])
     model.summary()
 
-    batch_size = 1024
+    batch_size = 1024*4
     nb_epochs = 10
 
     model.fit(X_train, y_train, batch_size=batch_size, epochs=nb_epochs, validation_data=(X_test, y_test))
+    model.save('tuan.h5')

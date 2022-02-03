@@ -1,0 +1,4 @@
+**/.idea/**
+**/__pycache__/**
+**/vad_data.tar.gz
+**/vad_data/**

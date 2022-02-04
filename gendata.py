@@ -1,11 +1,10 @@
 import json
+import multiprocessing
 import os
 import librosa
 import numpy as np
 
 dir = './vad_data/'
-files = os.listdir(dir)
-json_files = [f for f in files if f.endswith('json')]
 SAMPLE_RATE = 16000
 TRACK_DURATION = 0.064
 SAMPLES_PER_TRACK = int(TRACK_DURATION * SAMPLE_RATE)
@@ -28,12 +27,17 @@ def extract_features(signal, sr=16000, n_mfcc=5, size=512, step=16, n_mels=40):
 def segment_signal(signal, ):
     pass
 
+total_len = 0
+total_voice = 0
+
 
 def get_data(json_file, segments, seg_len=SAMPLES_PER_TRACK):
     audio_file = dir + json_file.split('.')[0] + '.wav'
     print(audio_file)
     audio, sr = librosa.load(audio_file, sr=SAMPLE_RATE)
     audio_len = len(audio)
+    global total_len
+    total_len += audio_len
     start = 0
     end = seg_len
     seg_data = []
@@ -41,6 +45,8 @@ def get_data(json_file, segments, seg_len=SAMPLES_PER_TRACK):
 
     for seg in segments:
         begin_seg, end_seg = int(seg[0] * SAMPLE_RATE), int(seg[1] * SAMPLE_RATE)
+        global total_voice
+        total_voice += (end_seg-begin_seg)
         while end < begin_seg:
             seg_data.append(audio[start: end])
             seg_label.append(0)
@@ -74,31 +80,64 @@ def get_data(json_file, segments, seg_len=SAMPLES_PER_TRACK):
 def write_to_file(files):
     all_data = [['path', 'start', 'end', 'duration']]
 
-data = []
-labels = []
 
-for file in json_files:
-    path = dir + file
+def split_train_test(files, ratio=0.2, random_seed=42):
+    files = np.asarray(files)
+    np.random.seed(random_seed)
+    np.random.shuffle(files)
+    num_train = int(len(files) * (1-ratio))
+    return files[:num_train], files[num_train:]
+
+
+def get_time_segments(path):
     segments = []
     with open(path) as f:
         d = json.load(f)
         dict_segments = d['speech_segments']
         for seg in dict_segments:
             segments.append([round(float(seg['start_time']), 2), round(float(seg['end_time']), 2)])
+    return segments
 
-    seg_data, seg_label = get_data(file, segments)
-    data.extend(seg_data)
-    labels.extend(seg_label)
 
-# features = [extract_features(d) for d in data]
-# print(np.asarray(features).shape)
+def gen_data_from_list_files(listfile):
+    data = []
+    labels = []
+    for file in listfile:
+        path = dir + file
+        segments = get_time_segments(path)
+        seg_data, seg_label = get_data(file, segments)
+        data.extend(seg_data)
+        labels.extend(seg_label)
 
-import multiprocessing
-p = multiprocessing.Pool(32)
-train_data = [extract_features(d) for d in data] #p.map(extract_features, data)
-p.close()
-p.join()
+    return data, labels
 
-np.save('train_imgs.npy', train_data)
-np.save('train_labels.npy', labels)
+
+def list_to_file(list, name='train_list'):
+    with open(name, 'w') as f:
+        for item in list:
+            f.write("%s\n" % item)
+
+
 # print(labels)
+if __name__ == "__main__":
+    files = os.listdir(dir)
+    json_files = [f for f in files if f.endswith('json')]
+    train_list, test_list = split_train_test(json_files, 0.2, 42)
+
+    list_to_file(train_list, 'train_list.txt')
+    list_to_file(test_list, 'test_lisst.txt')
+
+    train_data, train_label = gen_data_from_list_files(train_list)
+    test_data, test_label = gen_data_from_list_files(test_list)
+
+    # p = multiprocessing.Pool(4)
+    train_out = [extract_features(d) for d in train_data] # p.map(extract_features, train_data)
+    test_out  = [extract_features(d) for d in test_data] # p.map(extract_features, test_data)
+
+    # p.close()
+    # p.join()
+
+    np.save('train_imgs.npy', train_out)
+    np.save('train_labels.npy', train_label)
+    np.save('test_imgs.npy', test_out)
+    np.save('test_labels.npy', test_label)

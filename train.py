@@ -21,7 +21,7 @@ parser.add_argument('--batch', type=int, default=4096,
                     help='batch size)')
 parser.add_argument('--nepoch', type=int, default=20,
                     help='batch size)')
-parser.add_argument('--model-name', type=str, default='tuan.h5',
+parser.add_argument('--save-name', type=str, default='tuan.h5',
                     help='model save name')
 
 args = parser.parse_args()
@@ -92,32 +92,44 @@ def get_model_ResNet(data_shape, nbclass):
 def test_model(model):
   X_test, y_test = np.load('./data_train_test/test_imgs.npy'), np.load('./data_train_test/test_labels.npy')
   data_shape = X_test.shape
-  X_test = X_test.reshape((data_shape[0], data_shape[1], data_shape[2], 1))
+  
+  if args.model_mode != 1:
+    X_test = X_test.reshape((data_shape[0], data_shape[1], data_shape[2], 1))
   y_test = tf.keras.utils.to_categorical(y_test)
 
   score = model.evaluate(X_test, y_test, verbose=0)
   print(score)
 
 
+def get_data_train_test(enhance=True, model_mode=1):
+  data = np.load('./data_train_test/train_imgs.npy')
+  label = np.load('./data_train_test/train_labels.npy')
+  
+  if enhance:
+    new_data = np.load('./data_train_test/train2_imgs.npy')
+    new_label = np.load('./data_train_test/train2_labels.npy')
+    data = np.concatenate([data, new_data])
+    label = np.concatenate([label, new_label])
+
+  if model_mode != 1:
+    data_shape = data.shape
+    data = data.reshape((data_shape[0], data_shape[1], data_shape[2], 1))
+
+  label = tf.keras.utils.to_categorical(label) #label.reshape((len(label), 1))
+  X_train, X_val, y_train, y_val = train_test_split(data, label, test_size=0.3, random_state=42)
+  return X_train, X_val, y_train, y_val
+
 if __name__ == "__main__":
     set_gpu()
     model_mode = args.model_mode
-
-    data = np.load('./data_train_test/train_imgs.npy')
-    data_shape = data.shape
-    if model_mode != 1:
-      data = data.reshape((data_shape[0], data_shape[1], data_shape[2], 1))
-    label = np.load('./data_train_test/train_labels.npy')
-    label = tf.keras.utils.to_categorical(label) #label.reshape((len(label), 1))
-    X_train, X_val, y_train, y_val = train_test_split(data, label, test_size=0.3, random_state=42)
-    # print(y_test)
+    X_train, X_val, y_train, y_val = get_data_train_test(True, model_mode)
 
     if model_mode == 1:
-      model = get_model_LSTM(data.shape[1], data.shape[2], 2)
+      model = get_model_LSTM(X_train.shape[1], X_train.shape[2], 2)
     elif model_mode == 2:
-      model = get_model_CNN(data.shape[1], data.shape[2], 2)
+      model = get_model_CNN(X_train.shape[1], X_train.shape[2], 2)
     else:
-      model = get_model_ResNet(data_shape, 2)
+      model = get_model_ResNet(X_train.shape, 2)
 
     model.compile(loss='binary_crossentropy', optimizer='Adam', metrics=['accuracy'])
     model.summary()
@@ -128,5 +140,4 @@ if __name__ == "__main__":
     model.fit(X_train, y_train, batch_size=batch_size, epochs=nb_epochs, validation_data=(X_val, y_val))
 
     test_model(model)  
-  
-    model.save(args.model_name)
+    model.save(args.save_name)

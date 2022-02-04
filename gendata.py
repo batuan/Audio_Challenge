@@ -117,9 +117,14 @@ def list_to_file(list, name='train_list'):
         for item in list:
             f.write("%s\n" % item)
 
+def number2str(x):
+    if x < 10:
+        return '0'+str(x)
+    else:
+        return str(x)
 
-# print(labels)
-if __name__ == "__main__":
+
+def gen_vad_data():
     files = os.listdir(dir)
     json_files = [f for f in files if f.endswith('json')]
     train_list, test_list = split_train_test(json_files, 0.2, 42)
@@ -131,8 +136,8 @@ if __name__ == "__main__":
     test_data, test_label = gen_data_from_list_files(test_list)
 
     # p = multiprocessing.Pool(4)
-    train_out = [extract_features(d) for d in train_data] # p.map(extract_features, train_data)
-    test_out  = [extract_features(d) for d in test_data] # p.map(extract_features, test_data)
+    train_out = [extract_features(d) for d in train_data]  # p.map(extract_features, train_data)
+    test_out = [extract_features(d) for d in test_data]  # p.map(extract_features, test_data)
 
     # p.close()
     # p.join()
@@ -141,3 +146,33 @@ if __name__ == "__main__":
     np.save('train_labels.npy', train_label)
     np.save('test_imgs.npy', test_out)
     np.save('test_labels.npy', test_label)
+
+
+def trim_dat_noise(audio_file, seg_len=SAMPLES_PER_TRACK):
+    audio, sr = librosa.load(audio_file, sr=SAMPLE_RATE)
+    audio_len = len(audio)
+    nb_segments = audio_len // seg_len
+    seg_data = []
+    for i in range(nb_segments):
+        seg_data.append(audio[i*seg_len:(i+1)*seg_len])
+    return seg_data, np.ones(nb_segments)
+
+
+def gen_noise_data():
+    ROOMS = ['Room0'+number2str(x) for x in range(0,20)]
+    path1 = './RIRS_NOISES/pointsource_noises/'
+    path2 = './RIRS_NOISES/real_rirs_isotropic_noises/'
+    path3 = './RIRS_NOISES/simulated_rirs/'
+
+    files = [f for f in os.listdir(path1) if f.endswith('.wav')]
+    noise_data = []
+    noise_labels = []
+    for file in files:
+        seg_data, seg_label = trim_dat_noise(path1+file)
+        noise_data.extend(seg_data)
+        noise_labels.extend(seg_label)
+    print(len(noise_data), len(noise_labels))
+
+
+if __name__ == "__main__":
+    gen_noise_data()

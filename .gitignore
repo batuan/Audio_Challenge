@@ -8,3 +8,5 @@
 **/noise_data/**
 **/.ipynb_checkpoints/**
 **/models/resnet.h5
+**/LibriSpeech/**
+**/*.tar.gz

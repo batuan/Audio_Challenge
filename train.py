@@ -3,8 +3,9 @@ from model import Resnet1D
 import argparse
 from keras.models import Sequential
 from keras.layers.recurrent import LSTM
-from keras.layers import Dense
+from keras.layers import Dense, Conv2D, BatchNormalization, MaxPooling2D
 from sklearn.model_selection import train_test_split
+import tensorflow.keras as keras
 import tensorflow as tf
 import os
 
@@ -23,6 +24,34 @@ def get_model(timeseries, nfeatures, nclass):
     model.add(LSTM(units=128, dropout=0.05, recurrent_dropout=0.35, return_sequences=True, input_shape=(timeseries, nfeatures)))
     model.add(LSTM(units=32, dropout=0.05, recurrent_dropout=0.35, return_sequences=False))
     model.add(Dense(units=nclass, activation='softmax'))
+    return model
+
+def get_model_CNN(timeseries, nfeatures, nclass):
+    model = Sequential()
+    input_shape=(timeseries, nfeatures)
+    # 1st conv layer
+    model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape))
+    model.add(keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same'))
+    model.add(keras.layers.BatchNormalization())
+
+    # 2nd conv layer
+    model.add(keras.layers.Conv2D(32, (3, 3), activation='relu'))
+    model.add(keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same'))
+    model.add(keras.layers.BatchNormalization())
+
+    # 3rd conv layer
+    model.add(keras.layers.Conv2D(32, (2, 2), activation='relu'))
+    model.add(keras.layers.MaxPooling2D((2, 2), strides=(2, 2), padding='same'))
+    model.add(keras.layers.BatchNormalization())
+
+    # flatten output and feed it into dense layer
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(64, activation='relu'))
+    model.add(keras.layers.Dropout(0.3))
+
+    # output layer
+    model.add(keras.layers.Dense(nclass, activation='softmax'))
+
     return model
 
 

@@ -1,0 +1,4 @@
+cat resnet18_vad.txt | grep "accuracy" | cut -d'-' -f3 | cut -d':' -f2 > resnet_loss.txt
+cat lstm_vad.txt | grep "accuracy" | cut -d'-' -f3 | cut -d':' -f2 > lstm_loss.txt
+cat cnn_vad.txt | grep "accuracy" | cut -d'-' -f3 | cut -d':' -f2 > cnn_loss.txt
+cat fully_con_vad.txt | grep "accuracy" | cut -d'-' -f3 | cut -d':' -f2 > fully_loss.txt

@@ -1,0 +1,143 @@
+(tf-gpu) iasd22_0904@ourasi:~/sonos/sonos_challenge$ python train.py --nepoch 50 --model-mode=1 --save-name='./models/lstm_vad.h5' --batch=8196
+2022-02-05 14:04:57.250350: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2022-02-05 14:04:57.275356: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2022-02-05 14:04:57.277720: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+data shape is (131118, 65, 16)
+2022-02-05 14:04:57.865591: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-02-05 14:04:57.872170: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2022-02-05 14:04:57.874054: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2022-02-05 14:04:57.875716: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2022-02-05 14:04:58.648968: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2022-02-05 14:04:58.650785: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2022-02-05 14:04:58.652416: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2022-02-05 14:04:58.653910: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 46710 MB memory:  -> device: 0, name: RTX A6000, pci bus id: 0000:11:00.0, compute capability: 8.6
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #
+=================================================================
+lstm (LSTM)                  (None, 65, 128)           74240
+_________________________________________________________________
+lstm_1 (LSTM)                (None, 128)               131584
+_________________________________________________________________
+dense (Dense)                (None, 2)                 258
+_________________________________________________________________
+dense_1 (Dense)              (None, 128)               384
+_________________________________________________________________
+dense_2 (Dense)              (None, 64)                8256
+_________________________________________________________________
+dropout (Dropout)            (None, 64)                0
+_________________________________________________________________
+dense_3 (Dense)              (None, 48)                3120
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 48)                0
+_________________________________________________________________
+dense_4 (Dense)              (None, 2)                 98
+=================================================================
+Total params: 217,940
+Trainable params: 217,940
+Non-trainable params: 0
+_________________________________________________________________
+2022-02-05 14:05:00.207111: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
+Epoch 1/50
+2022-02-05 14:05:06.120531: I tensorflow/stream_executor/cuda/cuda_blas.cc:1760] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+12/12 [==============================] - 17s 918ms/step - loss: 0.6761 - accuracy: 0.7057 - val_loss: 0.6462 - val_accuracy: 0.8104
+Epoch 2/50
+12/12 [==============================] - 10s 815ms/step - loss: 0.6208 - accuracy: 0.8085 - val_loss: 0.5779 - val_accuracy: 0.8104
+Epoch 3/50
+12/12 [==============================] - 10s 811ms/step - loss: 0.5479 - accuracy: 0.8085 - val_loss: 0.5042 - val_accuracy: 0.8104
+Epoch 4/50
+12/12 [==============================] - 10s 845ms/step - loss: 0.4995 - accuracy: 0.8085 - val_loss: 0.4873 - val_accuracy: 0.8104
+Epoch 5/50
+12/12 [==============================] - 10s 824ms/step - loss: 0.4988 - accuracy: 0.8085 - val_loss: 0.4862 - val_accuracy: 0.8104
+Epoch 6/50
+12/12 [==============================] - 10s 801ms/step - loss: 0.4954 - accuracy: 0.8085 - val_loss: 0.4866 - val_accuracy: 0.8104
+Epoch 7/50
+12/12 [==============================] - 10s 803ms/step - loss: 0.4952 - accuracy: 0.8085 - val_loss: 0.4862 - val_accuracy: 0.8104
+Epoch 8/50
+12/12 [==============================] - 10s 822ms/step - loss: 0.4948 - accuracy: 0.8085 - val_loss: 0.4857 - val_accuracy: 0.8104
+Epoch 9/50
+12/12 [==============================] - 10s 817ms/step - loss: 0.4948 - accuracy: 0.8085 - val_loss: 0.4858 - val_accuracy: 0.8104
+Epoch 10/50
+12/12 [==============================] - 10s 813ms/step - loss: 0.4942 - accuracy: 0.8085 - val_loss: 0.4859 - val_accuracy: 0.8104
+Epoch 11/50
+12/12 [==============================] - 10s 823ms/step - loss: 0.4941 - accuracy: 0.8085 - val_loss: 0.4858 - val_accuracy: 0.8104
+Epoch 12/50
+12/12 [==============================] - 10s 834ms/step - loss: 0.4933 - accuracy: 0.8085 - val_loss: 0.4859 - val_accuracy: 0.8104
+Epoch 13/50
+12/12 [==============================] - 10s 820ms/step - loss: 0.4935 - accuracy: 0.8085 - val_loss: 0.4858 - val_accuracy: 0.8104
+Epoch 14/50
+12/12 [==============================] - 10s 826ms/step - loss: 0.4931 - accuracy: 0.8085 - val_loss: 0.4859 - val_accuracy: 0.8104
+Epoch 15/50
+12/12 [==============================] - 10s 832ms/step - loss: 0.4931 - accuracy: 0.8085 - val_loss: 0.4858 - val_accuracy: 0.8104
+Epoch 16/50
+12/12 [==============================] - 10s 823ms/step - loss: 0.4927 - accuracy: 0.8085 - val_loss: 0.4859 - val_accuracy: 0.8104
+Epoch 17/50
+12/12 [==============================] - 10s 831ms/step - loss: 0.4918 - accuracy: 0.8085 - val_loss: 0.4834 - val_accuracy: 0.8104
+Epoch 18/50
+12/12 [==============================] - 9s 786ms/step - loss: 0.4286 - accuracy: 0.8085 - val_loss: 0.3115 - val_accuracy: 0.8104
+Epoch 19/50
+12/12 [==============================] - 10s 800ms/step - loss: 0.2599 - accuracy: 0.8556 - val_loss: 0.2089 - val_accuracy: 0.9345
+Epoch 20/50
+12/12 [==============================] - 9s 796ms/step - loss: 0.2082 - accuracy: 0.9355 - val_loss: 0.1985 - val_accuracy: 0.9365
+Epoch 21/50
+12/12 [==============================] - 10s 854ms/step - loss: 0.1865 - accuracy: 0.9432 - val_loss: 0.1757 - val_accuracy: 0.9428
+Epoch 22/50
+12/12 [==============================] - 10s 808ms/step - loss: 0.1705 - accuracy: 0.9479 - val_loss: 0.1598 - val_accuracy: 0.9481
+Epoch 23/50
+12/12 [==============================] - 10s 817ms/step - loss: 0.1479 - accuracy: 0.9532 - val_loss: 0.1323 - val_accuracy: 0.9526
+Epoch 24/50
+12/12 [==============================] - 10s 823ms/step - loss: 0.1321 - accuracy: 0.9543 - val_loss: 0.1297 - val_accuracy: 0.9514
+Epoch 25/50
+12/12 [==============================] - 10s 805ms/step - loss: 0.1296 - accuracy: 0.9531 - val_loss: 0.1284 - val_accuracy: 0.9516
+Epoch 26/50
+12/12 [==============================] - 10s 806ms/step - loss: 0.1250 - accuracy: 0.9564 - val_loss: 0.1248 - val_accuracy: 0.9575
+Epoch 27/50
+12/12 [==============================] - 10s 806ms/step - loss: 0.1178 - accuracy: 0.9614 - val_loss: 0.1221 - val_accuracy: 0.9585
+Epoch 28/50
+12/12 [==============================] - 10s 815ms/step - loss: 0.1181 - accuracy: 0.9608 - val_loss: 0.1172 - val_accuracy: 0.9617
+Epoch 29/50
+12/12 [==============================] - 10s 813ms/step - loss: 0.1152 - accuracy: 0.9620 - val_loss: 0.1150 - val_accuracy: 0.9609
+Epoch 30/50
+12/12 [==============================] - 10s 803ms/step - loss: 0.1172 - accuracy: 0.9611 - val_loss: 0.1170 - val_accuracy: 0.9599
+Epoch 31/50
+12/12 [==============================] - 10s 814ms/step - loss: 0.1121 - accuracy: 0.9634 - val_loss: 0.1211 - val_accuracy: 0.9573
+Epoch 32/50
+12/12 [==============================] - 10s 797ms/step - loss: 0.1170 - accuracy: 0.9602 - val_loss: 0.1111 - val_accuracy: 0.9634
+Epoch 33/50
+12/12 [==============================] - 10s 801ms/step - loss: 0.1115 - accuracy: 0.9637 - val_loss: 0.1113 - val_accuracy: 0.9622
+Epoch 34/50
+12/12 [==============================] - 10s 794ms/step - loss: 0.1100 - accuracy: 0.9648 - val_loss: 0.1166 - val_accuracy: 0.9591
+Epoch 35/50
+12/12 [==============================] - 10s 805ms/step - loss: 0.1087 - accuracy: 0.9646 - val_loss: 0.1136 - val_accuracy: 0.9632
+Epoch 36/50
+12/12 [==============================] - 10s 817ms/step - loss: 0.1058 - accuracy: 0.9662 - val_loss: 0.1096 - val_accuracy: 0.9625
+Epoch 37/50
+12/12 [==============================] - 10s 808ms/step - loss: 0.1046 - accuracy: 0.9666 - val_loss: 0.1047 - val_accuracy: 0.9657
+Epoch 38/50
+12/12 [==============================] - 10s 801ms/step - loss: 0.1016 - accuracy: 0.9678 - val_loss: 0.1035 - val_accuracy: 0.9657
+Epoch 39/50
+12/12 [==============================] - 9s 790ms/step - loss: 0.0997 - accuracy: 0.9687 - val_loss: 0.1037 - val_accuracy: 0.9648
+Epoch 40/50
+12/12 [==============================] - 9s 773ms/step - loss: 0.1008 - accuracy: 0.9683 - val_loss: 0.1010 - val_accuracy: 0.9665
+Epoch 41/50
+12/12 [==============================] - 9s 779ms/step - loss: 0.0994 - accuracy: 0.9690 - val_loss: 0.1020 - val_accuracy: 0.9660
+Epoch 42/50
+12/12 [==============================] - 10s 807ms/step - loss: 0.0999 - accuracy: 0.9689 - val_loss: 0.1001 - val_accuracy: 0.9673
+Epoch 43/50
+12/12 [==============================] - 9s 795ms/step - loss: 0.0978 - accuracy: 0.9693 - val_loss: 0.1076 - val_accuracy: 0.9635
+Epoch 44/50
+12/12 [==============================] - 9s 779ms/step - loss: 0.0978 - accuracy: 0.9692 - val_loss: 0.1116 - val_accuracy: 0.9617
+Epoch 45/50
+12/12 [==============================] - 10s 796ms/step - loss: 0.0980 - accuracy: 0.9690 - val_loss: 0.1037 - val_accuracy: 0.9640
+Epoch 46/50
+12/12 [==============================] - 9s 776ms/step - loss: 0.0959 - accuracy: 0.9697 - val_loss: 0.1052 - val_accuracy: 0.9651
+Epoch 47/50
+12/12 [==============================] - 9s 785ms/step - loss: 0.0959 - accuracy: 0.9697 - val_loss: 0.1057 - val_accuracy: 0.9647
+Epoch 48/50
+12/12 [==============================] - 10s 809ms/step - loss: 0.0962 - accuracy: 0.9697 - val_loss: 0.0996 - val_accuracy: 0.9668
+Epoch 49/50
+12/12 [==============================] - 10s 805ms/step - loss: 0.0944 - accuracy: 0.9707 - val_loss: 0.0976 - val_accuracy: 0.9670
+Epoch 50/50
+12/12 [==============================] - 9s 784ms/step - loss: 0.0937 - accuracy: 0.9704 - val_loss: 0.0992 - val_accuracy: 0.9664
+[0.09588794410228729, 0.9663732647895813]

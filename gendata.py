@@ -152,8 +152,8 @@ def gen_vad_data():
     json_files = [f for f in files if f.endswith('json')]
     train_list, test_list = split_train_test(json_files, 0.2, 42)
 
-    list_to_file(train_list, 'train_list.txt')
-    list_to_file(test_list, 'test_lisst.txt')
+    list_to_file(train_list, './train_test_list/train_list.txt')
+    list_to_file(test_list, './train_test_list/test_lisst.txt')
 
     train_data, train_label = gen_data_from_list_files(train_list)
     test_data, test_label = gen_data_from_list_files(test_list)
@@ -161,14 +161,15 @@ def gen_vad_data():
     # p = multiprocessing.Pool(4)
     train_out = [extract_features(d) for d in train_data]  # p.map(extract_features, train_data)
     test_out = [extract_features(d) for d in test_data]  # p.map(extract_features, test_data)
-
+    
+    #TODO: multi thread
     # p.close()
     # p.join()
 
-    np.save('train_imgs.npy', train_out)
-    np.save('train_labels.npy', train_label)
-    np.save('test_imgs.npy', test_out)
-    np.save('test_labels.npy', test_label)
+    np.save('./data_train_test/train_imgs.npy', train_out)
+    np.save('./data_train_test/train_labels.npy', train_label)
+    np.save('./data_train_test/test_imgs.npy', test_out)
+    np.save('./data_train_test/test_labels.npy', test_label)
 
 
 def trim_dat_noise(audio_file, seg_len=SAMPLES_PER_TRACK):
@@ -181,6 +182,7 @@ def trim_dat_noise(audio_file, seg_len=SAMPLES_PER_TRACK):
     return seg_data, np.ones(nb_segments)
 
 
+#TODO: processing noise data 
 def gen_noise_data():
     ROOMS = ['Room0'+number2str(x) for x in range(0,20)]
     path1 = './RIRS_NOISES/pointsource_noises/'

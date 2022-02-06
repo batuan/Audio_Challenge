@@ -56,3 +56,16 @@ the external data can be download at [this link](https://drive.google.com/drive/
 
 - [ ] Train with noise dataset
 - [ ] Extract diffrence fetures
+
+## 5. References
+
+1.	https://github.com/filippogiruzzi/voice_activity_detection
+2.	https://github.com/skgusrb12/voice_activity_detection
+3.	Audio Signal Processing for Machine Learning Valerio Velardo - The Sound of AI [link](https://www.youtube.com/watch?v=iCwMQJnKk2c&list=PL-wATfeyAMNqIee7cH3q1bh4QJFAaeNv0)
+4.	CS 224S / LINGUIST 285 Spoken Language Processing [link](http://web.stanford.edu/class/cs224s/syllabus/)
+
+## 6. Planning
+
+-	Monday (31/01/2022) to Wednesday  (02/02/2022): reading book, paper, watch video to understand the concept of speech processing.
+-	Thursday (03/02/2022) and Friday (04/02/2022): Implements the VAD 
+-	Saturday (05/02/2022) and Sunday (06/02/2022): Run all experiment and write report

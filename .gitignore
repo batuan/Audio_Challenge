@@ -2,7 +2,7 @@
 **/__pycache__/**
 **/vad_data.tar.gz
 **/vad_data/**
-**/data_train_test/**
+**/data_train_test/*.npy
 **/RIRS_NOISES/**
 **/*.zip
 **/noise_data/**

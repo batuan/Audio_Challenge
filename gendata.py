@@ -11,6 +11,29 @@ SAMPLES_PER_TRACK = int(TRACK_DURATION * SAMPLE_RATE)
 
 
 def extract_features(signal, sr=16000, n_mfcc=5, size=512, step=16, n_mels=40):
+    """
+    Parameters
+    ----------
+    signal : np.ndarray [shape=(n,)] or None
+        audio time series
+
+    sr : number > 0 [scalar]
+        sampling rate of ``y``
+
+    size : FFT window
+    
+    step : hop length
+
+    n_mfcc: int > 0 [scalar]
+        number of MFCCs to return
+    
+    n_mels: number of Mel bands to generate
+
+    Returns
+    -------
+    features : numpy array that contain all feature extract (mfcc, delta 1, 2, rmse)
+    """
+
     mfcc = librosa.feature.mfcc(signal, sr=sr, n_mfcc=n_mfcc, n_fft=size, hop_length=step)
     mfcc_delta = librosa.feature.delta(mfcc)
     mfcc_delta_2 = librosa.feature.delta(mfcc, order=2)
@@ -175,4 +198,5 @@ def gen_noise_data():
 
 
 if __name__ == "__main__":
-    gen_noise_data()
+    #gen_noise_data()
+    gen_vad_data()

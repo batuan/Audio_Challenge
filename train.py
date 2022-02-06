@@ -1,7 +1,4 @@
-from ast import arg
-from turtle import st
 import numpy as np
-from model import Resnet1D
 import argparse
 from keras.models import Sequential
 from keras.layers.recurrent import LSTM
@@ -15,7 +12,7 @@ import keras_resnet.models
 import argparse
 
 parser = argparse.ArgumentParser(description='Config Model')
-parser.add_argument('--model-mode', metavar='N', type=int, default=1,
+parser.add_argument('--model-mode', metavar='N', type=int, default=4,
                     help='1 for LSTM, 2 for CNN, 3 for ResNet')
 parser.add_argument('--batch', type=int, default=4096,
                     help='batch size)')
@@ -23,9 +20,9 @@ parser.add_argument('--nepoch', type=int, default=20,
                     help='batch size)')
 parser.add_argument('--save-name', type=str, default='tuan.h5',
                     help='model save name')
-
+parser.add_argument('--enhance', type=bool, default=False,
+                    help='use external data or not)')
 args = parser.parse_args()
-
 
 
 def set_gpu(devide=1):
@@ -52,6 +49,30 @@ def get_model_LSTM(timeseries, nfeatures, nclass):
     model.add(Dense(nclass, activation='softmax'))
     return model
 
+
+def get_fully_connected(timeseries, nfeatures, nclass):
+  model = keras.Sequential([
+        # input layer
+        keras.layers.Flatten(input_shape=(timeseries, nfeatures)),
+
+        # 1st dense layer
+        keras.layers.Dense(512, activation='relu'),
+        keras.layers.Dropout(0.2),
+
+        # 2nd dense layer
+        keras.layers.Dense(256, activation='relu'),
+        keras.layers.Dropout(0.2),
+        
+        # 3rd dense layer
+        keras.layers.Dense(128, activation='relu'),
+        keras.layers.Dropout(0.2),
+
+        # 4th dense layer
+        keras.layers.Dense(64, activation='relu'),
+        # output layer
+        keras.layers.Dense(nclass, activation='softmax')
+    ])
+  return model
 
 
 def get_model_CNN(timeseries, nfeatures, nclass):
@@ -93,7 +114,7 @@ def test_model(model):
   X_test, y_test = np.load('./data_train_test/test_imgs.npy'), np.load('./data_train_test/test_labels.npy')
   data_shape = X_test.shape
   
-  if args.model_mode != 1:
+  if args.model_mode not in [0,3]:
     X_test = X_test.reshape((data_shape[0], data_shape[1], data_shape[2], 1))
   y_test = tf.keras.utils.to_categorical(y_test)
 
@@ -111,24 +132,29 @@ def get_data_train_test(enhance=True, model_mode=1):
     data = np.concatenate([data, new_data])
     label = np.concatenate([label, new_label])
 
-  if model_mode != 1:
+  if model_mode not in [0,3]:
     data_shape = data.shape
     data = data.reshape((data_shape[0], data_shape[1], data_shape[2], 1))
 
+  print("data shape is {}".format(data.shape))
   label = tf.keras.utils.to_categorical(label) #label.reshape((len(label), 1))
   X_train, X_val, y_train, y_val = train_test_split(data, label, test_size=0.3, random_state=42)
   return X_train, X_val, y_train, y_val
 
+ 
 if __name__ == "__main__":
     set_gpu()
     model_mode = args.model_mode
-    X_train, X_val, y_train, y_val = get_data_train_test(True, model_mode)
+    enhance = args.enhance
+    X_train, X_val, y_train, y_val = get_data_train_test(enhance, model_mode)
 
-    if model_mode == 1:
+    if model_mode == 0:
+      model = get_fully_connected(X_train.shape[1], X_train.shape[2], 2)
+    elif model_mode == 1:
       model = get_model_LSTM(X_train.shape[1], X_train.shape[2], 2)
     elif model_mode == 2:
       model = get_model_CNN(X_train.shape[1], X_train.shape[2], 2)
-    else:
+    elif model_mode == 3:
       model = get_model_ResNet(X_train.shape, 2)
 
     model.compile(loss='binary_crossentropy', optimizer='Adam', metrics=['accuracy'])

@@ -1,7 +1,8 @@
 **/.idea/**
 **/__pycache__/**
 **/vad_data.tar.gz
-**/vad_data/**
+**/vad_data/*.wav
+**/vad_data/*.json
 **/data_train_test/*.npy
 **/RIRS_NOISES/**
 **/*.zip

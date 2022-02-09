@@ -6,10 +6,8 @@ from keras.layers import Dense, Dropout
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 import tensorflow as tf
-import tensorflow.keras as keras
 import os
 import keras_resnet.models
-import argparse
 
 parser = argparse.ArgumentParser(description='Config Model')
 parser.add_argument('--model-mode', metavar='N', type=int, default=4,

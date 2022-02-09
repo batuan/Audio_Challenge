@@ -4,3 +4,4 @@ librosa==0.8.1
 numpy==1.20.3
 scikit_learn==1.0.2
 tensorflow==2.8.0
+jupyterplot

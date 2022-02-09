@@ -8,14 +8,16 @@ This Repo contain the source code for Voice Activity Detector task
 
 **The main purpose of this competition is to design deep learning algorithms that detect the audio frames is speech or non specch.**
 
-The project consists of two file: gen_data to extract features of data and train, train a Deep learning model and some jupyter notebook file for testing the model in audio file or real-time
+The project consists of two file: gen_data to extract features of data and train, train a Deep learning model and some jupyter notebook file for testing the model in audio file or real-time.
+
+The models, training, testing Dataset can be download at this [Google Drive](https://drive.google.com/drive/folders/1N8JF0tk48oz3R4Z0XPKM5PNmYVZAilzj?usp=sharing)
 
 ## 2. Dataset
 The vad_dataset contain 956 audio file, 16kHz, mono, each file have the label for the segments that have the speech. The total audio length is ~ 3h 
 
 I used the external data LibriSpeech ASR corpus dataset(https://www.openslr.org/resources/12/test-clean.tar.gz) at sampling rate 16kHz consist of approximately 10 hours and English speech from audiobook.
 
-The `label` of sepeech in this dataset was used as training dataset in my project can download [here](https://drive.google.com/drive/folders/1ZPQ6wnMhHeE7XP5dqpAEmBAryFzESlin) provided by the [filippogiruzzi](https://github.com/filippogiruzzi/voice_activity_detection).
+The `label` of sepeech in this dataset was used as the training dataset in my project can download [here](https://drive.google.com/drive/folders/1ZPQ6wnMhHeE7XP5dqpAEmBAryFzESlin) provided by the [filippogiruzzi](https://github.com/filippogiruzzi/voice_activity_detection).
 
 ## 3. Run this project
 
@@ -56,7 +58,7 @@ the external data can be download at [this link](https://drive.google.com/drive/
 
 - [ ] Train with noise dataset
 - [ ] Extract diffrence fetures
-
+- [ ] Use the smooth technique.
 ## 5. References
 
 1.	https://github.com/filippogiruzzi/voice_activity_detection
@@ -64,7 +66,7 @@ the external data can be download at [this link](https://drive.google.com/drive/
 3.	Audio Signal Processing for Machine Learning Valerio Velardo - The Sound of AI [link](https://www.youtube.com/watch?v=iCwMQJnKk2c&list=PL-wATfeyAMNqIee7cH3q1bh4QJFAaeNv0)
 4.	CS 224S / LINGUIST 285 Spoken Language Processing [link](http://web.stanford.edu/class/cs224s/syllabus/)
 
-## 6. Planning
+## 6. Milestones 
 
 -	Monday (31/01/2022) to Wednesday  (02/02/2022): reading book, paper, watch video to understand the concept of speech processing.
 -	Thursday (03/02/2022) and Friday (04/02/2022): Implements the VAD 

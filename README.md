@@ -1,5 +1,5 @@
 
-# Sonos_challenge
+# Audio challenge
 
 This Repo contain the source code for Voice Activity Detector task
 
